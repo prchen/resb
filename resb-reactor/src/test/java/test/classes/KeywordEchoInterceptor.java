@@ -18,6 +18,10 @@ public class KeywordEchoInterceptor implements Interceptor {
     private String reply;
     private boolean error;
 
+    public KeywordEchoInterceptor() {
+        this(DEFAULT_PRIORITY, null, null, null, false);
+    }
+
     public KeywordEchoInterceptor(int priority, Pointcut pointcut, String keyword, String reply, boolean error) {
         this.priority = priority;
         this.pointcut = pointcut;
@@ -38,13 +42,13 @@ public class KeywordEchoInterceptor implements Interceptor {
     }
 
     @Override
-    public <C extends Command<R>, R> Mono<Reply<R>> intercept(C command, Function<C, Mono<Reply<R>>> next) {
+    public <C extends Command<R>, R> Mono<Reply<R>> intercept(C command, Pointcut pointcut, Function<C, Mono<Reply<R>>> next) {
         if (error) {
             throw new RuntimeException();
         }
         if (command instanceof NativeEchoCmd) {
             if (((NativeEchoCmd) command).getContent().equals(keyword)) {
-                return Mono.just((Reply<R>) new Reply<>(reply));
+                return Mono.just((Reply<R>) Reply.of(reply));
             }
         }
         return next.apply(command);

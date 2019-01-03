@@ -1,12 +1,14 @@
 package test.classes;
 
+import org.springframework.stereotype.Service;
 import pub.resb.reactor.interfaces.Cell;
 import pub.resb.reactor.models.Reply;
 import reactor.core.publisher.Mono;
 
-public class NativeEchoCell implements Cell<NativeEchoCmd, String> {
+@Service
+public class EchoCell implements Cell<EchoCmd, String> {
     @Override
-    public Mono<Reply<String>> exchange(NativeEchoCmd command) {
+    public Mono<Reply<String>> exchange(EchoCmd command) {
         return Mono.just(Reply.of(command.getContent()));
     }
 }
