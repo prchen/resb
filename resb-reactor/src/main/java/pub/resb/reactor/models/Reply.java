@@ -1,6 +1,5 @@
 package pub.resb.reactor.models;
 
-import pub.resb.reactor.constants.BuiltInError;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
@@ -15,11 +14,6 @@ public class Reply<T> implements Serializable {
     private T result;
 
     public Reply() {
-    }
-
-    public Reply(T result) {
-        this.result = result;
-        this.success = true;
     }
 
     public T getResult() {
@@ -80,8 +74,15 @@ public class Reply<T> implements Serializable {
                 '}';
     }
 
-    public static ErrorBuilder error(String name) {
-        return name == null ? BuiltInError.BUILTIN_UNKNOWN_ERROR.toBuilder() : new ErrorBuilder(name);
+    public static <T> Reply<T> of(T result) {
+        Reply<T> reply = new Reply<>();
+        reply.setSuccess(true);
+        reply.setResult(result);
+        return reply;
+    }
+
+    public static ErrorBuilder fromError(String name) {
+        return new ErrorBuilder(name);
     }
 
     @SuppressWarnings("unchecked")
@@ -90,13 +91,20 @@ public class Reply<T> implements Serializable {
 
         private ErrorBuilder(String name) {
             reply = new Reply();
-            reply.success = false;
-            reply.errorName = name;
-            reply.errorAttrs = new HashMap<>();
+            reply.setSuccess(false);
+            reply.setErrorName(name);
+            reply.setErrorAttrs(new HashMap<>());
         }
 
         public ErrorBuilder attr(String name, Object value) {
-            reply.errorAttrs.put(name, value != null ? value.toString() : null);
+            reply.getErrorAttrs().put(name, value != null ? value.toString() : null);
+            return this;
+        }
+
+        public ErrorBuilder attrs(Map<String, Object> attrs) {
+            if (attrs != null) {
+                attrs.forEach((key, value) -> reply.getErrorAttrs().put(key, value != null ? value.toString() : null));
+            }
             return this;
         }
 

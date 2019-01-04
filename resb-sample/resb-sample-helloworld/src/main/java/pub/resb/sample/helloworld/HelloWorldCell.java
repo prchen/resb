@@ -7,6 +7,6 @@ import reactor.core.publisher.Mono;
 public class HelloWorldCell implements Cell<HelloWorldCommand, String> {
     @Override
     public Mono<Reply<String>> exchange(HelloWorldCommand command) {
-        return Mono.just(new Reply<>("Hello World!"));
+        return Mono.just(Reply.of("Hello World!"));
     }
 }

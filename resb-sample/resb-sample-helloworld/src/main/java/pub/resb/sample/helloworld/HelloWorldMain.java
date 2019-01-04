@@ -8,7 +8,7 @@ public class HelloWorldMain {
     private static final ServiceBus serviceBus;
 
     static {
-        serviceBus = new ServiceBusBuilder()
+        serviceBus = ServiceBus.builder()
                 .cell(new HelloWorldCell())
                 .build();
     }

@@ -14,6 +14,6 @@ public interface Interceptor extends Ordered {
 
     Set<Pointcut> getPointcuts();
 
-    <C extends Command<R>, R> Mono<Reply<R>> intercept(C command, Function<C, Mono<Reply<R>>> next);
+    <C extends Command<R>, R> Mono<Reply<R>> intercept(C command, Pointcut pointcut, Function<C, Mono<Reply<R>>> next);
 
 }

@@ -8,6 +8,6 @@ public class RemoteEchoCell implements Cell<RemoteEchoCmd, String> {
 
     @Override
     public Mono<Reply<String>> exchange(RemoteEchoCmd command) {
-        return Mono.just(new Reply<>(command.getContent()));
+        return Mono.just(Reply.of(command.getContent()));
     }
 }

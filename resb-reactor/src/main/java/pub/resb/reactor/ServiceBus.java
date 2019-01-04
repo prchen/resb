@@ -16,4 +16,8 @@ public interface ServiceBus {
     Mono<InetSocketAddress> discover(URI uri);
 
     Mono<InetAddress> resolve(String name);
+
+    static ServiceBusBuilder builder() {
+        return new ServiceBusBuilder();
+    }
 }
