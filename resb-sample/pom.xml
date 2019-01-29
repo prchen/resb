@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>pub.resb</groupId>
-            <artifactId>resb-reactor</artifactId>
+            <artifactId>resb-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

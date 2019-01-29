@@ -3,9 +3,8 @@ package pub.resb.starter.factory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pub.resb.reactor.ServiceBus;
-import pub.resb.reactor.ServiceBusBuilder;
-import pub.resb.reactor.interfaces.*;
+import pub.resb.api.interfaces.*;
+import pub.resb.core.DefaultServiceBus;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +24,7 @@ public class ServiceBusFactoryBean implements FactoryBean<ServiceBus> {
 
     @Override
     public ServiceBus getObject() throws Exception {
-        return ServiceBus.builder()
+        return DefaultServiceBus.builder()
                 .cells(cells)
                 .resolvers(resolvers)
                 .explorers(explorers)

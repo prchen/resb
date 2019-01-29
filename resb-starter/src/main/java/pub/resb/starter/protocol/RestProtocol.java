@@ -8,11 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
-import pub.resb.reactor.ServiceBus;
-import pub.resb.reactor.interfaces.Protocol;
-import pub.resb.reactor.models.Command;
-import pub.resb.reactor.models.Reply;
-import pub.resb.reactor.utils.ModelUtils;
+import pub.resb.api.interfaces.Protocol;
+import pub.resb.api.interfaces.ServiceBus;
+import pub.resb.api.models.Command;
+import pub.resb.api.models.Reply;
+import pub.resb.core.utils.ResbApiUtils;
 import reactor.core.publisher.Mono;
 
 import java.net.Inet6Address;
@@ -35,14 +35,14 @@ public class RestProtocol implements Protocol<ObjectNode> {
     }
 
     @Override
-    public <C extends Command<R>, R> Mono<Reply<R>> exchange(ServiceBus serviceBus, URI entry, C command) {
+    public <C extends Command<R>, R> Mono<Reply<R>> clientExchange(ServiceBus serviceBus, URI entry, C command) {
         return serviceBus.discover(entry)
                 .flatMap(x -> httpExchange(entry, x, command))
                 .flatMap(x -> wrapResponse(command, x));
     }
 
     @Override
-    public <C extends Command<R>, R> Mono<C> deserialize(Class<C> commandType, ObjectNode payload) {
+    public <C extends Command<R>, R> Mono<C> serverDeserialize(ServiceBus serviceBus, Class<C> commandType, ObjectNode payload) {
         return Mono.just(objectMapper.convertValue(payload, commandType));
     }
 
@@ -54,7 +54,7 @@ public class RestProtocol implements Protocol<ObjectNode> {
                 address.getHostAddress();
         int port = endpoint.getPort();
         return webClient.post()
-                .uri(String.format("http://%s:%s/Cells/%s", host, port, ModelUtils.getCellName(entry)))
+                .uri(String.format("http://%s:%s/Cells/%s", host, port, ResbApiUtils.getCellName(entry)))
                 .header("Host", endpoint.getHostString() + (port == 80 ? "" : ":" + String.valueOf(port)))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .syncBody(objectMapper.convertValue(command, ObjectNode.class))
@@ -63,7 +63,7 @@ public class RestProtocol implements Protocol<ObjectNode> {
 
     @SuppressWarnings("unchecked")
     private <C extends Command<R>, R> Mono<Reply<R>> wrapResponse(C command, ClientResponse response) {
-        Class<R> resultType = (Class<R>) ModelUtils.getResultType((Class<? extends Command<?>>) command.getClass());
+        Class<R> resultType = (Class<R>) ResbApiUtils.getResultType((Class<? extends Command<?>>) command.getClass());
         return Mono.just(response)
                 .filter(x -> x.rawStatusCode() == 200)
                 .switchIfEmpty(Mono.error(new RestProtocolException(response)))

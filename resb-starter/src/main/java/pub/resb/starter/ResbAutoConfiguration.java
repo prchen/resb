@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import pub.resb.reactor.implementations.BlockedSystemResolver;
-import pub.resb.reactor.implementations.HostAndPortExplorer;
+import pub.resb.core.implementations.SystemResolver;
+import pub.resb.core.implementations.HostAndPortExplorer;
 
 @ComponentScan
 @SpringBootConfiguration
@@ -14,8 +14,8 @@ import pub.resb.reactor.implementations.HostAndPortExplorer;
 public class ResbAutoConfiguration {
 
     @Bean
-    public BlockedSystemResolver blockedSystemResolver() {
-        return new BlockedSystemResolver();
+    public SystemResolver blockedSystemResolver() {
+        return new SystemResolver();
     }
 
     @Bean

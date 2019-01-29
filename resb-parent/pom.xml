@@ -28,7 +28,7 @@
         <dependencies>
             <dependency>
                 <groupId>pub.resb</groupId>
-                <artifactId>resb-reactor</artifactId>
+                <artifactId>resb-core</artifactId>
                 <version>0.1.0-SNAPSHOT</version>
             </dependency>
         </dependencies>

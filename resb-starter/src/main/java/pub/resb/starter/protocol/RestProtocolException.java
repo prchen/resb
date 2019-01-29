@@ -1,7 +1,7 @@
 package pub.resb.starter.protocol;
 
 import org.springframework.web.reactive.function.client.ClientResponse;
-import pub.resb.reactor.exceptions.GenericException;
+import pub.resb.core.exceptions.GenericException;
 
 import java.util.Collections;
 import java.util.Map;

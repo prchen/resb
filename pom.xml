@@ -11,7 +11,7 @@
 
     <modules>
         <module>resb-parent</module>
-        <module>resb-reactor</module>
+        <module>resb-core</module>
         <module>resb-starter</module>
         <module>resb-sample</module>
     </modules>
