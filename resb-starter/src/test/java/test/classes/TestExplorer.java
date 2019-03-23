@@ -1,6 +1,7 @@
 package test.classes;
 
-import pub.resb.reactor.interfaces.Explorer;
+import pub.resb.api.interfaces.Explorer;
+import pub.resb.api.interfaces.ServiceBus;
 import reactor.core.publisher.Mono;
 
 import java.net.InetAddress;
@@ -16,7 +17,7 @@ public class TestExplorer implements Explorer {
     }
 
     @Override
-    public Mono<InetSocketAddress> discover(URI uri) {
+    public Mono<InetSocketAddress> discover(ServiceBus serviceBus, URI uri) {
         try {
             return Mono.just(new InetSocketAddress(InetAddress.getLocalHost(), port));
         } catch (UnknownHostException e) {

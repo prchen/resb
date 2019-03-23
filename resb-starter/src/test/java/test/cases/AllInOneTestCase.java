@@ -10,9 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import pub.resb.reactor.ServiceBus;
-import pub.resb.reactor.implementations.BlockedSystemResolver;
-import pub.resb.reactor.models.Reply;
+import pub.resb.core.DefaultServiceBus;
+import pub.resb.api.interfaces.ServiceBus;
+import pub.resb.core.implementations.SystemResolver;
+import pub.resb.api.models.Reply;
 import pub.resb.starter.protocol.RestProtocol;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -35,9 +36,9 @@ public class AllInOneTestCase {
 
     @Before
     public void initClient() {
-        clientBus = ServiceBus.builder()
+        clientBus = DefaultServiceBus.builder()
                 .explorer(new TestExplorer(port))
-                .resolver(new BlockedSystemResolver())
+                .resolver(new SystemResolver())
                 .protocol(protocol)
                 .build();
     }

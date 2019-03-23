@@ -1,14 +1,14 @@
 package pub.resb.sample.helloworld;
 
-import pub.resb.reactor.ServiceBus;
-import pub.resb.reactor.ServiceBusBuilder;
-import pub.resb.reactor.models.Reply;
+import pub.resb.core.DefaultServiceBus;
+import pub.resb.api.interfaces.ServiceBus;
+import pub.resb.api.models.Reply;
 
 public class HelloWorldMain {
     private static final ServiceBus serviceBus;
 
     static {
-        serviceBus = ServiceBus.builder()
+        serviceBus = DefaultServiceBus.builder()
                 .cell(new HelloWorldCell())
                 .build();
     }

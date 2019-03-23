@@ -67,7 +67,7 @@ cd resb && \
 ```xml
 <dependency>
     <groupId>pub.resb</groupId>
-    <artifactId>resb-reactor</artifactId>
+    <artifactId>resb-core</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -93,7 +93,7 @@ Define the `Cell` that will handle the `Command`:
 ```java
 public class HelloWorldCell implements Cell<HelloWorldCommand, String> {
     @Override
-    public Mono<Reply<String>> exchange(HelloWorldCommand command) {
+    public Mono<Reply<String>> exchange(ServiceBus serviceBus, HelloWorldCommand command) {
         return Mono.just(Reply.of("Hello World!"));
     }
 }
@@ -107,7 +107,7 @@ public class HelloWorldMain {
     private static final ServiceBus serviceBus;
 
     static {
-        serviceBus = ServiceBus.builder()
+        serviceBus = DefaultServiceBus.builder()
                 .cell(new HelloWorldCell())
                 .build();
     }
@@ -126,7 +126,7 @@ Run the main method and see the output:
 Hello World!
 ```
 
-> You may also find some example from the test cases in `resb-reactor` project.
+> You may also find some example from the test cases in `resb-core` project.
 
 ## License
 
